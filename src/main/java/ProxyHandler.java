@@ -14,5 +14,9 @@ public class ProxyHandler implements HttpHandler {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod(httpExchange.getRequestMethod());
 
+        // getRequestHeaders returns Headers from the request in the form of key-values
+        httpExchange.getRequestHeaders().forEach((key, value)-> {
+            connection.setRequestProperty(key, String.join(",", value));
+        });
     }
 }
