@@ -13,7 +13,7 @@ private HttpServer server;
 
     public void Start(int port) throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
-        server.createContext("/", new MyHandler());
+        server.createContext("/", new ProxyHandler());
         server.setExecutor((Executor) null);
         server.start();
         System.out.println("Server started on port:" + port);

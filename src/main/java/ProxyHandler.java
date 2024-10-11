@@ -31,5 +31,19 @@ public class ProxyHandler implements HttpHandler {
             requestBody.write(httpExchange.getRequestBody().readAllBytes());
             requestBody.close();
         }
+
+        // get response from backend
+        int responseCode = connection.getResponseCode();
+        httpExchange.sendResponseHeaders(responseCode, connection.getContentLengthLong());
+
+        connection.getHeaderFields().forEach((key, value)-> {
+            if(key != null){
+                httpExchange.getResponseHeaders().add(key, (String.join(",", value)) );
+            }
+        });
+
+        try(OutputStream os = httpExchange.getResponseBody()) {
+            os.write(connection.getInputStream().readAllBytes());
+        }
     }
 }
